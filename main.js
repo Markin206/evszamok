@@ -34,7 +34,7 @@ const row1 = document.createElement('tr'); // Létrehozzuk az 1. sort
 tablaBody.appendChild(row1); // Hozzáadjuk a tablebodyhoz
 
 const idoszak1 = document.createElement('td'); // Létrehozzuk az "Időszak" cellát
-idoszak1.setAttribute('rowspan', '2'); // Beállítjuk a rowspan értéket 2-re
+idoszak1.rowSpan = 2; // Beállítjuk a rowspan értéket 2-re
 idoszak1.innerHTML = "XVI. század"; // Beállítjuk a tartalmat
 row1.appendChild(idoszak1); // Hozzáadjuk a sorhoz
 
@@ -91,7 +91,7 @@ const row4 = document.createElement('tr'); // Létrehozzuk a 4. sort
 tablaBody.appendChild(row4); // Hozzáadjuk a tablebodyhoz
 
 const idoszak4 = document.createElement('td'); // Létrehozzuk az "Időszak" cellát
-idoszak4.setAttribute('rowspan', '2'); // Beállítjuk a rowspan értéket 2-re
+idoszak4.rowSpan = 2;; // Beállítjuk a rowspan értéket 2-re
 idoszak4.innerHTML = "XVIII. század"; // Beállítjuk a tartalmat
 row4.appendChild(idoszak4); // Hozzáadjuk a sorhoz
 
@@ -128,7 +128,7 @@ const row6 = document.createElement('tr'); // Létrehozzuk a 6. sort
 tablaBody.appendChild(row6); // Hozzáadjuk a tablebodyhoz
 
 const idoszak6 = document.createElement('td'); // Létrehozzuk az "Időszak" cellát
-idoszak6.setAttribute('rowspan', '2'); // Beállítjuk a rowspan értéket 2-re
+idoszak6.rowSpan = 2;; // Beállítjuk a rowspan értéket 2-re
 idoszak6.innerHTML = "XIX. század"; // Beállítjuk a tartalmat
 row6.appendChild(idoszak6); // Hozzáadjuk a sorhoz
 
