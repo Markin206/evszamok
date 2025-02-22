@@ -115,3 +115,40 @@ for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
 }
 }
 renderTable()
+
+const form = document.getElementById('form')//meghívjuk az első HTMLelementet amely form idvel rendelkezik
+
+form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon submitoltunk-e bármit is
+    e.preventDefault();//ezáltal nem fut let a függvény hogyha frissítjük a weboldalt
+
+    const htmlElementKorszak = document.getElementById('korszak')//meghívjuk az első HTMLelementet amely korszak idvel rendelkezik
+    const htmlElementEvszam1 = document.getElementById('evszam1')//meghívjuk az első HTMLelementet amely evszam1 idvel rendelkezik
+    const htmlElementMegnev1 = document.getElementById('megnev1')//meghívjuk az első HTMLelementet amely megnev1 idvel rendelkezik
+    const htmlElementTan1 = document.getElementById('tan1')//meghívjuk az első HTMLelementet amely tan1 idvel rendelkezik
+    const htmlElementEvszam2 = document.getElementById('evszam2')//meghívjuk az első HTMLelementet amely evszam2 idvel rendelkezik
+    const htmlElementMegnev2 = document.getElementById('megnev2')//meghívjuk az első HTMLelementet amely megnev2 idvel rendelkezik
+    const htmlElementTan2 = document.getElementById('tan2')//meghívjuk az első HTMLelementet amely tan2 idvel rendelkezik
+
+    const korszakValue = htmlElementKorszak.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const evszam1Value = htmlElementEvszam1.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const megnev1Value = htmlElementMegnev1.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const tan1Value = htmlElementTan1.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const evszam2Value = htmlElementEvszam2.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const megnev2Value = htmlElementMegnev2.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+    const tan2Value = htmlElementTan2.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
+
+    const newElement = {//létrehozunk egy új objektumot ahol a tulajdonságok megkapják a lokális változók értékét
+        idoszak: korszakValue,
+        evszam: evszam1Value,
+        esemeny: megnev1Value,
+        tananyag: tan1Value,
+        evszam2: evszam2Value,
+        esemeny2: megnev2Value,
+        tananyag2: tan2Value
+    }
+
+    evszamokArray.push(newElement)//az új objektumot felpusholjuk a tömbe
+    tablaBody.innerHTML = "";//kiürítjük a táblázat tőrzsét
+    renderTable();//meghívjuk a táblázatott újból
+    form.reset();//kiürítjük/újra indítjuk a formot
+})
