@@ -108,7 +108,6 @@ for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
         const esemeny2 = document.createElement('td');//létre hozunk egy cellát
         esemeny2.innerHTML = currentElement.esemeny2;//feltöltjük az esemeny2 tartalmát
         row2.appendChild(esemeny2);//hozzáadjuk a sorhoz
-
         const tananyag2 = document.createElement('td');//létre hozunk egy cellát
         tananyag2.innerHTML = currentElement.tananyag2;//feltöltjük az tananyag2 tartalmát
         row2.appendChild(tananyag2);//hozzáadjuk a sorhoz
