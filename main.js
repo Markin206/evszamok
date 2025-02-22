@@ -75,7 +75,7 @@ for(const currentHeadElement of evszamokHeaderArray){//végig iterálunk az evsz
     row.appendChild(tananyag)//hozzáadjuk a sorhoz a cellát
 }
 
-
+function renderTable(){//létrehozzuk a függvényt
 for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
     const row = document.createElement('tr'); // Létrehozok egy sort
     tablaBody.appendChild(row); // hozzáadom a táblázat tőrzséhez
@@ -113,3 +113,5 @@ for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
         row2.appendChild(tananyag2);//hozzáadjuk a sorhoz
     }
 }
+}
+renderTable()
