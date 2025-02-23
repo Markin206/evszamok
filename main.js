@@ -142,35 +142,7 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
         {
         errors.innerHTML = "";//kiürítjük a divet
         }
-    let valid;//létrehozunk egy boolean
-    if(evszam2Value != "" || megnev2Value != "" || tan2Value != ""){//ha bármelyik inputban megvan adva érték akkor belép
-        valid = true// megadjuk a valid alapértékét true értékre
-
-        if(evszam2Value == ""){//ha evszám2 üres akkor belép
-            const parentElement = htmlElementEvszam2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
-            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
-            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második evszámot második sor létrehozása esetében"//error tartalmát feltöltjük
-            }
-            valid = false;//valid értékét frissítjük falsera
-        }
-
-        if(megnev2Value == ""){//ha esemény2 üres akkor belép
-            const parentElement = htmlElementMegnev2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
-            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
-            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második eseményt a második sor létrehozása esetében"//error tartalmát feltöltjük
-            }valid = false;//valid értékét frissítjük falsera
-        }
-
-        if(tan2Value == ""){//ha tananyag2 üres akkor belép
-            const parentElement = htmlElementTan2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
-            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
-            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második tananyagot a második sor létrehozása esetében"//error tartalmát feltöltjük
-            }valid = false;//valid értékét frissítjük falsera
-        }
-    }
+    
 
     const newElement = {//létrehozunk egy új objektumot ahol a tulajdonságok megkapják a lokális változók értékét
         idoszak: korszakValue,
@@ -181,10 +153,43 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
         esemeny2: megnev2Value,
         tananyag2: tan2Value
     }
-    if(valid){//ha nincs hiba lefut
+    if(linearValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2)){//ha nincs hiba lefut
     evszamokArray.push(newElement)//az új objektumot felpusholjuk a tömbe
     tablaBody.innerHTML = "";//kiürítjük a táblázat tőrzsét
     renderTable();//meghívjuk a táblázatott újból
     form.reset();//kiürítjük/újra indítjuk a formot
     }
 })
+
+function linearValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2){//létrehozzuk a függvényt amelynek 3 paramétere lesz
+    let valid = true// //létrehozunk egy boolean az alapértékét true értékre adjuk
+    if(htmlElementEvszam2.value != "" || htmlElementMegnev2.value != "" || htmlElementTan2.value != ""){//ha bármelyik inputban megvan adva érték akkor belép
+        
+
+        if(htmlElementEvszam2.value == ""){//ha evszám2 üres akkor belép
+            const parentElement = htmlElementEvszam2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második evszámot második sor létrehozása esetében"//error tartalmát feltöltjük
+            }
+            valid = false;//valid értékét frissítjük falsera
+        }
+
+        if(htmlElementMegnev2.value == ""){//ha esemény2 üres akkor belép
+            const parentElement = htmlElementMegnev2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második eseményt a második sor létrehozása esetében"//error tartalmát feltöltjük
+            }valid = false;//valid értékét frissítjük falsera
+        }
+
+        if(htmlElementTan2.value == ""){//ha tananyag2 üres akkor belép
+            const parentElement = htmlElementTan2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második tananyagot a második sor létrehozása esetében"//error tartalmát feltöltjük
+            }valid = false;//valid értékét frissítjük falsera
+        }
+    }
+    return valid
+}
