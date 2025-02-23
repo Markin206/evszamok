@@ -128,7 +128,7 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
     const htmlElementEvszam2 = document.getElementById('evszam2')//meghívjuk az első HTMLelementet amely evszam2 idvel rendelkezik
     const htmlElementMegnev2 = document.getElementById('megnev2')//meghívjuk az első HTMLelementet amely megnev2 idvel rendelkezik
     const htmlElementTan2 = document.getElementById('tan2')//meghívjuk az első HTMLelementet amely tan2 idvel rendelkezik
-
+    if(simpleValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2)){//ha nincs semmilyen hiba akkor lefutt
     const korszakValue = htmlElementKorszak.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
     const evszam1Value = htmlElementEvszam1.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
     const megnev1Value = htmlElementMegnev1.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
@@ -153,43 +153,80 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
         esemeny2: megnev2Value,
         tananyag2: tan2Value
     }
-    if(linearValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2)){//ha nincs hiba lefut
+    if(linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMegnev1, htmlElementTan1)){//ha nincs hiba lefut
     evszamokArray.push(newElement)//az új objektumot felpusholjuk a tömbe
     tablaBody.innerHTML = "";//kiürítjük a táblázat tőrzsét
     renderTable();//meghívjuk a táblázatott újból
     form.reset();//kiürítjük/újra indítjuk a formot
-    }
+    }}
 })
 
-function linearValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2){//létrehozzuk a függvényt amelynek 3 paramétere lesz
+function linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMegnev1, htmlElementTan1){//létrehozzuk a függvényt amelynek 3 paramétere lesz
     let valid = true// //létrehozunk egy boolean az alapértékét true értékre adjuk
-    if(htmlElementEvszam2.value != "" || htmlElementMegnev2.value != "" || htmlElementTan2.value != ""){//ha bármelyik inputban megvan adva érték akkor belép
-        
 
-        if(htmlElementEvszam2.value == ""){//ha evszám2 üres akkor belép
-            const parentElement = htmlElementEvszam2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+        if(htmlElementKorszak.value == ""){//ha evszám2 üres akkor belép
+            const parentElement = htmlElementKorszak.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
             const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
             if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második evszámot második sor létrehozása esetében"//error tartalmát feltöltjük
+                error.innerHTML = "Kötelező megadni a korszakot"//error tartalmát feltöltjük
             }
             valid = false;//valid értékét frissítjük falsera
         }
 
-        if(htmlElementMegnev2.value == ""){//ha esemény2 üres akkor belép
-            const parentElement = htmlElementMegnev2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+        if(htmlElementEvszam1.value == ""){//ha esemény2 üres akkor belép
+            const parentElement = htmlElementEvszam1.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
             const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
-            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második eseményt a második sor létrehozása esetében"//error tartalmát feltöltjük
+            if(error){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Kötelező megadni a évszámot"//error tartalmát feltöltjük
             }valid = false;//valid értékét frissítjük falsera
         }
 
-        if(htmlElementTan2.value == ""){//ha tananyag2 üres akkor belép
-            const parentElement = htmlElementTan2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+        if(htmlElementMegnev1.value == ""){//ha tananyag2 üres akkor belép
+            const parentElement = htmlElementMegnev1.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
             const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
-            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
-                error.innerHTML = "Meg kell adni a második tananyagot a második sor létrehozása esetében"//error tartalmát feltöltjük
+            if(error){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Kötelező megadni az 1. eseményt"//error tartalmát feltöltjük
             }valid = false;//valid értékét frissítjük falsera
         }
-    }
+
+        if(htmlElementTan1.value == ""){//ha tananyag2 üres akkor belép
+            const parentElement = htmlElementTan1.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Kötelező megadni a tananyagot"//error tartalmát feltöltjük
+            }valid = false;//valid értékét frissítjük falsera
+        }
     return valid
+}
+
+
+function simpleValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2) {
+    let valid = true; // a valid valtozo erteke igaz
+    if(htmlElementEvszam2.value != "" || htmlElementMegnev2.value != "" || htmlElementTan2.value != ""){
+        if(!validateFormHtmlField(htmlElementEvszam2, "A 2. évszám megadása kötelező ha létrehozunk 2. sort")){ // Ha a validateFormHtmlField fuggveny hamissal ter vissza a bementei lastName htmlElement eseten
+            valid = false; // a valid valtozo erteket false-ra allitjuk
+        }
+
+        if(!validateFormHtmlField(htmlElementMegnev2, "A 2. esemény megadása kötelező ha létrehozunk 2. sort")){ // Ha a validateFormHtmlField fuggveny hamissal ter vissza a bementei lastName htmlElement eseten
+            valid = false;  // a valid valtozo erteket false-ra allitjuk
+        }
+
+        if(!validateFormHtmlField(htmlElementTan2, "A 2. tananyag megadása kötelező ha létrehozunk 2. sort")){ // Ha a validateFormHtmlField fuggveny hamissal ter vissza a bementei lastName htmlElement eseten
+            valid = false;  // a valid valtozo erteket false-ra allitjuk
+        }
+    }
+    return valid; // vissyaterek a lokalis valid valtozo ertekevel
+}
+
+function validateFormHtmlField(inputhtmlElement, errormessage){ // definialjuk a validateFormHtmlField fuggvenyt
+    let valid = true; // definialjuk a valid lokalis valtozot true ertekkel
+    if(inputhtmlElement.value == ""){//ha tananyag2 üres akkor belép
+        const parentElement = inputhtmlElement.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+        const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+        if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+            error.innerHTML = errormessage//error tartalmát feltöltjük
+        }valid = false;//valid értékét frissítjük falsera
+    }
+
+    return valid; // visszaterek a lokalis valid valtozoval, ami akkor hamis ha htmlelement nem ment at a validacion, egyebkent igazzal ter vissza
 }
