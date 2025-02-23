@@ -1,4 +1,8 @@
 //----------------------------------------------------------------------------------------- array
+
+/**
+ * tömb amely a táblázat alap értékeit és tartalmát raktározza
+ */
 const evszamokArray = [//létrehozzuk a tömböt
 
     {
@@ -35,7 +39,9 @@ const evszamokArray = [//létrehozzuk a tömböt
         tananyag: "Magyar"//megadjuk az tananyag tulajdonságot és tartalmát feltöltjük egy string értékel
     },
 ]
-
+/**
+* tömb amely a fejléc tartalmát raktározza
+*/
 const evszamokHeaderArray = [
     {
         idoszak: "Időszak",//megadjuk az időszak tulajdonságot és tartalmát feltöltjük egy string értékel
@@ -45,6 +51,9 @@ const evszamokHeaderArray = [
     }
 ]
 
+/**
+ * tömb amely a form adatait és tartalmát raktározza
+ */
 const formArray = [//létrehozzuk a tömböt amelynek 3 tulajdonsága lesz label, id, input_type
     {
         label : "Korszak megnevezés:",
@@ -95,7 +104,10 @@ tabla.appendChild(tablaheader); // Hozzáadjuk a headert a táblázathoz
 const tablaBody = document.createElement('tbody'); // Létrehozzuk a tablebodyt
 tabla.appendChild(tablaBody); // Hozzáadjuk a törzset a táblázathoz
 
-
+/**
+ * ez az a függvény amely létrehozza a fejlécet és végig iterál a megadott tömbön
+ * @param {Array} evszamokHeaderarray ez az a tömb amely a fejléc tartalmát raktározza
+ */
 function renderHeader(evszamokHeaderarray){//létrehozzuk a függvényt amelynek egy  tömb paramétere lesz
 for(const currentHeadElement of evszamokHeaderarray){//végig iterálunk a paraméterben megadott objektumokon
     const row = document.createElement('tr')//létrehozunk egy sort
@@ -117,6 +129,12 @@ for(const currentHeadElement of evszamokHeaderarray){//végig iterálunk a param
     row.appendChild(tananyag)//hozzáadjuk a sorhoz a cellát
 }}
 
+/**
+ * ezzel a függvényel iratjuk ki a táblázatott
+ * a függvény megnézi hogy létezik második események
+ * ha igen akkor az idoszak rowspan2 és a 2.sor hozzá fűzi
+ * @param {Array} array ez az a tömb amely az alap értékeket tartalmazza
+ */
 function renderTable(array){//létrehozzuk a függvényt amelynek egy  tömb paramétere lesz
 for (const currentElement of array) {//végig iterálunk a paraméterben megadott objektumokon
     const row = document.createElement('tr'); // Létrehozok egy sort
@@ -160,7 +178,12 @@ renderHeader(evszamokHeaderArray)//meghívjuk a függvényt
 renderTable(evszamokArray)//meghívjuk a függvényt
 //----------------------------------------------------------------------------------------- form
 
-
+/**
+ * létre hozzuk a form-ot ebben a függvényben
+ * a függvény végig iterál a formArray tömbön és megnézi a input típusát
+ * ha select akkor option elemeket hozz létre ha nem akkor egy sima
+ * text típusú inputot hoz létre
+ */
 function createForm() {//létrehozzuk a függvényt
     const form = document.createElement('form'); //létrehozzuk a form elemet
     const button = document.createElement('button')//létrehozunk egy gombot
@@ -222,6 +245,17 @@ createForm();//meghívjuk a createform
 
 const form = document.querySelector('form');//meghívjuk az első HTMLelementet amely form idvel rendelkezik
 
+/**
+ * ebben van az esemény kezelő
+ * a függvény megvárja a submit megtörténését és aztán lefut
+ * természetesen van benne az is hogyha frissítjük a weboldalt akkor nem fut le
+ * 
+ * függvény megnézi az inputok értékét és egy lokális változóba eltárolja
+ * közbe validációs függvényekkel nézzük hogy a felhasználó nem rontott el semmit a
+ * esemény kezelő inputjaiban
+ * ha nem rontott el semmit akkor az új megadott esemény és annak adatait
+ * belerakja a tömbbe és újra meghívja táblázat tőrzsét
+ */
 form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon submitoltunk-e bármit is
     e.preventDefault();//ezáltal nem fut let a függvény hogyha frissítjük a weboldalt
 
@@ -266,6 +300,15 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
 
 
 //----------------------------------------------------------------------------------------- validation
+/**
+ * az első szimpla validáció amely megnézi hogy a korszak, evszam1, esemeny1, tan1 inputjai 
+ * nem üresek-e ha mégis akkor a esemény kezelő nem engedi az új adatok hozzáadását
+ * @param {HTMLElement} htmlElementKorszak ez a korszak htmlElement amely egyben input
+ * @param {HTMLElement} htmlElementEvszam1 ez a evszam1 htmlElement amely egyben input
+ * @param {HTMLElement} htmlElementMegnev1 ez a megnev1 htmlElement amely egyben input
+ * @param {HTMLElement} htmlElementTan1 ez a tan1 htmlElement amely egyben input
+ * @returns {boolean} ez a valid elemnt amit vissza adunk ezzel tudjuk hozzáadni az új objektumot/sort/elemeket a táblázathoz
+ */
 function linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMegnev1, htmlElementTan1){//létrehozzuk a függvényt amelynek 3 paramétere lesz
     let valid = true// //létrehozunk egy boolean az alapértékét true értékre adjuk
 
@@ -301,10 +344,20 @@ function linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMeg
                 error.innerHTML = "Kötelező megadni a tananyagot"//error tartalmát feltöltjük
             }valid = false;//valid értékét frissítjük falsera
         }
-    return valid
+    return valid//vissza adjuk a valid értélét
 }
 
 //----------------------------------------------------------------------------------------- komplex validation
+/**
+ * egy komplex validáció amely meghívja a validateFormHtmlField függvényt
+ * a függvény elösször megnézi hogy bármelyik cella üres-e vagy sem
+ * ha nem akkor megnézzük az összes cellával hogy üresek-e és ha igen akkor
+ * hiba üzenetett ki iratjuk
+ * @param {HTMLElement} htmlElementEvszam2 ez a evszam2 input a formban
+ * @param {HTMLElement} htmlElementMegnev2 ez a megnev2 input a formban
+ * @param {HTMLElement} htmlElementTan2 ez a tan2 input a formban
+ * @returns {boolean} ez a valid amely tovább engedélyezi hogy lefusson a esemény kezelő
+ */
 function simpleValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2) {
     let valid = true; // a valid valtozo erteke igaz
     if(htmlElementEvszam2.value != "" || htmlElementMegnev2.value != "" || htmlElementTan2.value != ""){
@@ -323,6 +376,14 @@ function simpleValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan
     return valid; // vissyaterek a lokalis valid valtozo ertekevel
 }
 
+/**
+ * ezzel a függvényel megnézzük a megadott htmlElement értékét
+ * ha üres akkor a parent html elementbe error divjébe kiíratjuk a
+ * megadott hibaüzenetett
+ * @param {HTMLElement} inputhtmlElement a megadott htmlElement
+ * @param {string} errormessage a megadott hiba üzenet 
+ * @returns {boolean} ez a valid amely a simplevalidation-nél fontos mert ha hamis akkor azt jelenti hogy ott hiba van
+ */
 function validateFormHtmlField(inputhtmlElement, errormessage){ // definialjuk a validateFormHtmlField fuggvenyt
     let valid = true; // definialjuk a valid lokalis valtozot true ertekkel
     if(inputhtmlElement.value == ""){//ha tananyag2 üres akkor belép
