@@ -56,8 +56,8 @@ const tablaBody = document.createElement('tbody'); // Létrehozzuk a tablebodyt
 tabla.appendChild(tablaBody); // Hozzáadjuk a törzset a táblázathoz
 
 
-function renderHeader(){
-for(const currentHeadElement of evszamokHeaderArray){//végig iterálunk az evszamokHeaderArray tömbön
+function renderHeader(evszamokHeaderarray){//létrehozzuk a függvényt amelynek egy  tömb paramétere lesz
+for(const currentHeadElement of evszamokHeaderarray){//végig iterálunk a paraméterben megadott objektumokon
     const row = document.createElement('tr')//létrehozunk egy sort
     tablaheader.appendChild(row)//hozzá adjuk a fejléchez
 
@@ -77,8 +77,8 @@ for(const currentHeadElement of evszamokHeaderArray){//végig iterálunk az evsz
     row.appendChild(tananyag)//hozzáadjuk a sorhoz a cellát
 }}
 
-function renderTable(){//létrehozzuk a függvényt
-for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
+function renderTable(array){//létrehozzuk a függvényt amelynek egy  tömb paramétere lesz
+for (const currentElement of array) {//végig iterálunk a paraméterben megadott objektumokon
     const row = document.createElement('tr'); // Létrehozok egy sort
     tablaBody.appendChild(row); // hozzáadom a táblázat tőrzséhez
 
@@ -116,8 +116,8 @@ for (const currentElement of evszamokArray) {//végig iterálunk az objektumokon
     }
 }
 }
-renderHeader()//meghívjuk a függvényt
-renderTable()//meghívjuk a függvényt
+renderHeader(evszamokHeaderArray)//meghívjuk a függvényt
+renderTable(evszamokArray)//meghívjuk a függvényt
 
 const form = document.getElementById('form')//meghívjuk az első HTMLelementet amely form idvel rendelkezik
 
@@ -158,7 +158,7 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
     if(linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMegnev1, htmlElementTan1)){//ha nincs hiba lefut
     evszamokArray.push(newElement)//az új objektumot felpusholjuk a tömbe
     tablaBody.innerHTML = "";//kiürítjük a táblázat tőrzsét
-    renderTable();//meghívjuk a táblázatott újból
+    renderTable(evszamokArray);//meghívjuk a táblázatott újból
     form.reset();//kiürítjük/újra indítjuk a formot
     }}
 })
