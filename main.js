@@ -142,7 +142,6 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
         {
         errors.innerHTML = "";//kiürítjük a divet
         }
-    
 
     const newElement = {//létrehozunk egy új objektumot ahol a tulajdonságok megkapják a lokális változók értékét
         idoszak: korszakValue,
