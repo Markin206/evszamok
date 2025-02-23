@@ -44,6 +44,46 @@ const evszamokHeaderArray = [
         tananyag: "Tananyag"//megadjuk az tananyag tulajdonságot és tartalmát feltöltjük egy string értékel
     }
 ]
+
+const formArray = [//létrehozzuk a tömböt amelynek 3 tulajdonsága lesz label, id, input_type
+    {
+        label : "Korszak megnevezés:",
+        id: "korszak",
+        input_type: "text"
+    },
+    {
+        label : "1. esemény évszám:",
+        id: "evszam1",
+        input_type: "text"
+    },
+    {
+        label : "1. esemény megnevezés:",
+        id: "megnev1",
+        input_type: "text"
+    },
+    {
+        label : "1. esemény tananyag:",
+        id: "tan1",
+        input_type: "select"
+    },
+    {
+        label : "2. esemény évszám:",
+        id: "evszam2",
+        input_type: "text"
+    },
+    {
+        label : "2. esemény megnevezés:",
+        id: "megnev2",
+        input_type: "text"
+    },
+    {
+        label : "2. esemény tananyag:",
+        id: "tan2",
+        input_type: "select"
+    }
+];
+
+
 //----------------------------------------------------------------------------------------- tabla lineáris
 
 const tabla = document.createElement('table'); // Létrehozzuk a táblázatot
@@ -118,8 +158,69 @@ for (const currentElement of array) {//végig iterálunk a paraméterben megadot
 }
 renderHeader(evszamokHeaderArray)//meghívjuk a függvényt
 renderTable(evszamokArray)//meghívjuk a függvényt
+//----------------------------------------------------------------------------------------- form
 
-const form = document.getElementById('form')//meghívjuk az első HTMLelementet amely form idvel rendelkezik
+
+function createForm() {//létrehozzuk a függvényt
+    const form = document.createElement('form'); //létrehozzuk a form elemet
+    const button = document.createElement('button')//létrehozunk egy gombot
+    button.innerHTML = "Hozzáadás";//a gomb tartalmát feltöltjük stringgel
+
+    for(const formElement of formArray) {//végig iterálunk a formArray tömbön
+        const formDiv = document.createElement('div');//létrehozunk egy div-et
+        const formLabel = document.createElement('label');//létrehozunk egy labelt
+        const formError = document.createElement('div');//létrehozunk egy divet
+        formError.classList.add("error");//a divhez hozzá adjuk az error osztályt
+        
+        formLabel.innerHTML = formElement.label;//a label tartalmát feltöltjük
+        formLabel.setAttribute("for", formElement.id);//hozzáadjuk a for attribútumot a labelhez, hogy kapcsolódjon a megfelelő inputhoz
+
+        if (formElement.input_type === "select") {//ha az input select akkor belép
+            const formInput = document.createElement('select');//létrehozzuk a select elemet
+            formInput.name = formElement.id;//megadjuk a select nevét
+            formInput.id = formElement.id;//megadjuk a select ID-ját
+
+            const option1 = document.createElement('option');//létrehozzuk a option elemet
+            option1.value = "";//értékét megadjuk
+            option1.innerText = "";//tartalma üres
+            formInput.appendChild(option1);//hozzáadjuk az inputhoz mint kiválasztható elemet
+
+            const option2 = document.createElement('option');
+            option2.value = "magyar";//értékét megadjuk
+            option2.innerText = "Magyar történelem";//tartalma megadjuk
+            formInput.appendChild(option2);//hozzáadjuk az inputhoz mint kiválasztható elemet
+
+            const option3 = document.createElement('option');
+            option3.value = "egyetemes";//értékét megadjuk
+            option3.innerText = "Egyetemes történelem";//tartalma megadjuk
+            formInput.appendChild(option3);//hozzáadjuk az inputhoz mint kiválasztható elemet
+
+            formDiv.appendChild(formLabel);//hozzáadjuk a labelt a divhez
+            formDiv.appendChild(document.createElement('br'));//vonal törés
+            formDiv.appendChild(formInput);//input hozzáadása
+        }else{//ha az input típusa text
+            const formInput = document.createElement('input');//létrehozzuk az input elemet
+            formInput.type = formElement.input_type;//megadjuk az input típusát
+            formInput.name = formElement.id;//megadjuk az input nevét
+            formInput.id = formElement.id;//megadjuk az input ID-ját
+
+            formDiv.appendChild(formLabel);//hozzáadjuk a labelt a divhez
+            formDiv.appendChild(document.createElement('br'));//vonal törés
+            formDiv.appendChild(formInput);//input hozzáadása
+        }
+
+        formDiv.appendChild(document.createElement('br'));//hozzáadjuk a divhez az újonnan létrehozott vonal törést
+        formDiv.appendChild(formError);//hozzáadjuk a error divet a divhez
+        formDiv.appendChild(document.createElement('br'));//hozzáadjuk a divhez az újonnan létrehozzott vonal törést
+        form.appendChild(formDiv);//hozzáadjuk a divet a formhoz
+    }
+
+    form.appendChild(button);//hozzáadjuk a gombot a formhoz
+    document.body.appendChild(form);//hozzáadjuk a weboldal testéhez a formot
+}
+createForm();//meghívjuk a createform
+
+const form = document.querySelector('form');//meghívjuk az első HTMLelementet amely form idvel rendelkezik
 
 form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon submitoltunk-e bármit is
     e.preventDefault();//ezáltal nem fut let a függvény hogyha frissítjük a weboldalt
@@ -163,6 +264,8 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
     }}
 })
 
+
+//----------------------------------------------------------------------------------------- validation
 function linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMegnev1, htmlElementTan1){//létrehozzuk a függvényt amelynek 3 paramétere lesz
     let valid = true// //létrehozunk egy boolean az alapértékét true értékre adjuk
 
@@ -201,7 +304,7 @@ function linearValidation(htmlElementKorszak, htmlElementEvszam1, htmlElementMeg
     return valid
 }
 
-
+//----------------------------------------------------------------------------------------- komplex validation
 function simpleValidation(htmlElementEvszam2, htmlElementMegnev2, htmlElementTan2) {
     let valid = true; // a valid valtozo erteke igaz
     if(htmlElementEvszam2.value != "" || htmlElementMegnev2.value != "" || htmlElementTan2.value != ""){
