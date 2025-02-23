@@ -137,6 +137,41 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
     const megnev2Value = htmlElementMegnev2.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
     const tan2Value = htmlElementTan2.value//a meghívott htmlElement értékét berakjuk egy lokális változóba
 
+    const error = form.querySelectorAll('.error');//kiválasztjuk az összes div-et amely error osztályt tartalmaz
+        for(const errors of error)//végig iterálunk az összes error div-en
+        {
+        errors.innerHTML = "";//kiürítjük a divet
+        }
+    let valid;//létrehozunk egy boolean
+    if(evszam2Value != "" || megnev2Value != "" || tan2Value != ""){//ha bármelyik inputban megvan adva érték akkor belép
+        valid = true// megadjuk a valid alapértékét true értékre
+
+        if(evszam2Value == ""){//ha evszám2 üres akkor belép
+            const parentElement = htmlElementEvszam2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második evszámot második sor létrehozása esetében"//error tartalmát feltöltjük
+            }
+            valid = false;//valid értékét frissítjük falsera
+        }
+
+        if(megnev2Value == ""){//ha esemény2 üres akkor belép
+            const parentElement = htmlElementMegnev2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második eseményt a második sor létrehozása esetében"//error tartalmát feltöltjük
+            }valid = false;//valid értékét frissítjük falsera
+        }
+
+        if(tan2Value == ""){//ha tananyag2 üres akkor belép
+            const parentElement = htmlElementTan2.parentElement//meghívjuk a parentelementet (field-eket a html-ben)
+            const error = parentElement.querySelector('.error');//kiválasztjuk a parentelementen belül a error osztályal rendelkező
+            if(error != null){//megnézzük hogy a error létezik-e a parentElementben
+                error.innerHTML = "Meg kell adni a második tananyagot a második sor létrehozása esetében"//error tartalmát feltöltjük
+            }valid = false;//valid értékét frissítjük falsera
+        }
+    }
+
     const newElement = {//létrehozunk egy új objektumot ahol a tulajdonságok megkapják a lokális változók értékét
         idoszak: korszakValue,
         evszam: evszam1Value,
@@ -146,9 +181,10 @@ form.addEventListener('submit', function(e){//megfigyeljük hogy a weboldalon su
         esemeny2: megnev2Value,
         tananyag2: tan2Value
     }
-
+    if(valid){//ha nincs hiba lefut
     evszamokArray.push(newElement)//az új objektumot felpusholjuk a tömbe
     tablaBody.innerHTML = "";//kiürítjük a táblázat tőrzsét
     renderTable();//meghívjuk a táblázatott újból
     form.reset();//kiürítjük/újra indítjuk a formot
+    }
 })
